@@ -1,0 +1,30 @@
+<template>
+    <div class="control-selection-box">
+
+        <div class="control-title">
+            <span><slot name="title">No Title</slot></span>
+            <i class="fa-solid fa-angle-right" v-if="!isExpanded" @click="isExpanded = !isExpanded"></i>
+            <i class="fa-solid fa-angle-down" v-else @click="isExpanded = !isExpanded"></i>
+        </div>
+        <div v-if="isExpanded">
+            <slot>No Controllers</slot>
+        </div>
+       
+                    
+    </div>
+</template>
+
+<script>
+import { defineComponent } from "vue"
+
+export default defineComponent({
+    data() {
+        return {
+            isExpanded: true
+        }
+    },
+    methods: {
+
+    }
+}) 
+</script>

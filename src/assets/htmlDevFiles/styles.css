@@ -1,0 +1,547 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:wght@500&family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@200&family=Space+Grotesk&display=swap');
+
+:root {
+    --darker-color: #402218;
+    --normal-color: #865439;
+    --light-color: #C68B59;
+    --lighter-color: #D7B19D;
+    --lightest-color: #FFE4D4;
+
+}
+
+
+
+* {
+    /* this makes total size = size + padding + boarder */
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    display: flex;
+    background-color: var(--normal-color);
+}
+
+.app, #app {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Styles for Navbar */
+ 
+.nav-bar {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    background-color: var(--darker-color);
+    color: white;
+}
+
+.logo-container {
+    display: flex;
+    height: 100%;
+    width: 200px;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    font-family: 'Big Shoulders Display';
+    font-size: 50px;
+    font-weight: bolder;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 42px #402218, 0 0 82px #402218,0 0 92px #402218;
+	color: white;
+	text-align: center;
+    user-select: none;	
+
+}
+
+.logo:hover {
+    text-shadow: 0 0 10px #fff, 0 0 30px #fff, 0 0 52px #402218, 0 0 102px #402218,0 0 102px #402218;
+    cursor: pointer;
+}
+
+.nav-menu {
+    display: flex;
+    width: calc(100% - 300px);
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.menu-item {
+    margin: auto 20px;
+    font-family: 'Space Grotesk';
+    font-size: 20px;
+}
+
+#menu-more {
+    position: relative;
+}
+
+.more-menu-item-container {
+    border-radius: 5px;
+    position: absolute;
+    transform: translateY(10%);
+    width: 150px;
+    background-color: var(--lighter-color);
+}
+
+.more-menu-item {
+    font-size: 18px;
+    padding: 5px 15px;
+    color: black;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.3)
+}
+
+.search-section {
+    margin-right: 20px;
+    width: 250px;
+    display: flex;
+    align-items: center;
+}
+
+.search-box {
+    font-family: 'Space Grotesk';
+    font-size: 16px;
+    height: 30px;
+}
+
+
+/* Styles for main section  in index page*/
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    
+}
+
+.main-heading {
+    color: var(--lightest-color);
+    font-size: 2.4rem;
+    padding: 10px;
+}
+
+.trending-container {
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1000px;
+
+}
+
+@media (max-width: 715px) {
+    .trending-container {
+        width: 500px;
+    }
+}
+
+
+.trending-card {
+    background-color: var(--lighter-color);
+    width:200px;
+    height: 350px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.image-area {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    width: 100%;
+    height: 80%;
+    background-position: center;
+    background-size: cover;
+    background-image:url('https://image.tmdb.org/t/p/w500/yIeFT2RqJdXMRIhGLs05xtzBkt9.jpg')
+
+}
+
+.detail-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 20%;
+}
+
+.genre-toast {
+    background-color: var(--lightest-color);
+    color: black;
+    padding: 4px 8px;
+    margin: 3px;
+    border-radius: 3px;
+}
+
+/* CSS for main section in pages with a filters */
+/* CSS for filter and sorting area */
+
+.controlable-page-content-area {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+}
+
+.control-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    height: 100%;
+}
+
+.control-selection-box{
+    background-color: var(--darker-color);
+    color: var(--lightest-color);
+    width: 80%;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.control-title{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    justify-content: space-between;
+    padding: 0px 15px;
+
+}
+
+.control-body{
+    width: 100%;
+
+}
+
+.input-section {
+    border-top: 2px solid rgba(256, 256, 256, 0.3);
+    padding: 15px;
+}
+
+.control-hidden {
+    /* display: none; */
+}
+
+.filter-input {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 16px;
+    color: white;
+    width: 100%;
+    background-color: var(--darker-color);
+}
+
+/* CSS for card area (Main area) */
+
+.card-part {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    /* background-color: beige; */
+    width: 100%;
+    height: 100%;
+}
+
+.content-page-navigation {
+    display: flex;
+    width: 200px;
+    justify-content: space-around;
+}
+
+.page-nav {
+    background-color: var(--lightest-color);
+    border: solid 2px var(--darker-color);
+    border-radius: 3px;
+    text-align: center;
+    min-width: 40px;
+    padding: 3px;
+    margin: 2px;
+    user-select: none;
+}
+
+.nav-pre,
+.nav-next {
+    min-width: 80px;
+}
+
+
+
+.common-card {
+    background-color: var(--lighter-color);
+    width:160px;
+    height: 290px;
+    margin: 0 10px 15px 10px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.common-image-area {
+    height: 70%;
+}
+
+.common-detail-area{
+    display: flex;
+    align-content: center;
+    justify-content: start;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 30%;
+    padding-left: 5px;
+}
+
+.common-detail-area p {
+    width: 100%;
+    font-weight: bold;
+    padding: 3px 0;
+    margin: 0;
+}
+
+.common-detail-area span {
+    font-size: 12px;
+}
+
+.rating-container {
+    border-radius: 50%;
+    border: 3px solid var(--lightest-color);
+    background-color: var(--darker-color);
+    width: 40px;
+    height: 40px;
+    color: var(--lightest-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    transform: translate(20%, -50%);
+}
+
+/* Responsive CSS for pages with control section */
+@media (max-width: 600px) {
+    .controlable-page-content-area {
+        flex-direction: column;
+    }
+
+    .control-container {
+        width: 100%;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        /* background-color: beige; */
+        width: 100%;
+        height: 100%;
+    }
+}
+
+
+
+/* Css for pages like Popular, Treding .... (Pages do not have a contol area) */
+.full-width-container {
+    width: 100%
+}
+
+
+/* CSS for individual Movie pages */
+.summary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--darker-color);
+    width: 100%;
+    /* min-height: 500px; */
+    padding: 20px 0;
+    margin-top: 20px;
+    
+}
+
+.summary .image-container {
+    border-radius: 5px;
+    width: 300px;
+    height: 450px;
+    background-position: center;
+    background-size: cover;
+    background-image:url('https://image.tmdb.org/t/p/w500/yIeFT2RqJdXMRIhGLs05xtzBkt9.jpg');
+    margin-right: 30px;
+}
+
+.summary .text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* background-color: #D7B19D; */
+    width: calc(80% - 300px);
+    min-height: 400px;
+    color: white;
+    padding: 10px;
+}
+
+.summary .text-container h1 {
+    font-size: 2rem;
+    margin: 0 0 3px 0;
+}
+
+.summary .text-container span {
+    font-size: 14px;
+    font-style: italic;
+    margin: 20px 0 0 0;
+    color: rgba(256, 256, 256, 0.7);
+    font-weight: bold;
+}
+
+.summary .text-container p {
+    font-size: 14px;
+    margin: 0 0;
+}
+
+
+.summary .text-container h3 {
+    font-size: 18px;
+    margin: 15px 0 3px 0;
+}
+
+@media (max-width: 600px) {
+    .summary {
+        flex-direction: column;
+    }
+
+    .summary .image-container {
+        width: 300px;
+        height: 450px;
+    }
+
+    .summary .text-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 90%;
+        min-height: 400px;
+        padding: 10px;
+    }
+        
+}
+
+.additional-data {
+    display: flex;
+    align-items: flex-start;
+    width: 95%;
+}
+
+.actors-and-media{
+    display: flex;
+    flex-direction: column;
+    width: 72%;
+}
+
+.actors-container {
+    position: relative;
+    overflow-x: auto;
+    display: flex;
+    width: 100%;
+    padding-bottom: 10px;
+    /* background-color: aqua; */
+
+}
+
+.actors-card {
+    background-color: var(--lighter-color);
+    min-width: 150px;
+    height: 262px;
+    margin: 0 10px 0 0;
+    border-radius: 5px;
+    position: relative;
+}
+
+.actor-detail-area {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.actor-detail-area p {
+    font-weight: bold;
+    margin: 0;
+}
+
+.actor-detail-area span {
+    font-size: 12px;
+}
+
+.less-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--lighter-color);
+    border-radius: 5px;
+    width: 25%;
+    margin-left: 25px;
+    margin-top: 80px;
+    padding-left: 10px;
+}
+
+.less-info h3 {
+    font-size: 16px;
+    margin: 12px 0 3px 0;
+}
+
+.less-info p {
+    font-size: 14px;
+    margin: 0 0 12px 0;
+}
+
+.additional-data hr{
+    width: 100%;
+    margin: 50px 0 0 0;
+    border-color: rgba(256, 256, 256, 0.3);
+}
+
+.media-nav {
+    display: flex;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Space Grotesk';
+}
+
+.media-menu-item {
+    margin: 0 20px 0 0
+}
+
+.media-container {
+    width: 100%;
+    background-color: aliceblue;
+}
+
+.media-sample{
+    height: 300px;
+}
+
+
+
+
+
+
+
+
+
+/* https://image.tmdb.org/t/p/w500/yIeFT2RqJdXMRIhGLs05xtzBkt9.jpg */
