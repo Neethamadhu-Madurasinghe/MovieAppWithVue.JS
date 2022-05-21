@@ -280,6 +280,11 @@ body {
 .genre-toast-interactive {
 }
 
+.genre-toast-selected {
+    background-color: var(--light-color);
+}
+
+
 @media (max-width: 600px) {
     .main-heading {
         font-size: 2.0rem;
