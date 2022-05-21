@@ -1,21 +1,41 @@
 <template>
     <div class="main">
             <div class="summary">
-                <div v-if="typeof imageData.posters == 'object'" class="image-container" :style="`background-image:url('https://image.tmdb.org/t/p/w500/${imageData.posters[0].file_path}')`"></div>
-                <div class="text-container">
-                    <h1 v-if="typeof (movieData.release_date) == 'string'">{{movieData.title}} {{movieData.release_date.slice(0, 4)}}</h1>
-                    <p>{{movieData.release_date}} <span v-for="(genre, index) in movieData.genres" :key="genre.id"><span v-if="index != 0">, </span>{{genre.name}}</span></p>
+                <!-- <div
+                    v-if="imageData.posters != undefined && imageData.posters.length > 0"
+                    class="image-container"
+                    :style="`background-image:url('${movieImage}')`"
+                    >
+                </div> -->
+                <img :src="movieImage" alt="Image not found" class="image-container">
 
-                    <span class="tagline">{{movieData.tagline}}</span>
+                <div class="text-container">
+
+                    <h1 v-if="typeof (movieData.release_date) == 'string'">{{movieData.title}} {{movieData.release_date.slice(0, 4)}}</h1>
+                    <p>{{movieData.release_date}} 
+                        <ul class="comma-list">
+                            <li v-for="genre in movieData.genres" :key="genre.id">{{genre.name}}</li>
+                        </ul>
+                    </p>
+
+                    <!-- <p>{{movieData.release_date}} <span v-for="(genre, index) in movieData.genres" :key="genre.id"><span v-if="index != 0">, </span>{{genre.name}}</span></p> -->
+                    
+                    <div v-if="typeof movieData.vote_average == 'number'" class="movie-summary-rating">{{movieData.vote_average}}</div>
+
+                    <span v-if="movieData.tagline" class="tagline">{{movieData.tagline}}</span>
 
                     <h3>Overview</h3>
                     <p>{{movieData.overview}}</p>
 
-                    <h3 v-if="typeof crewData == 'object'">{{crewData.find(crewMember => crewMember.job == 'Director').name}}</h3>
-                    <p>Director</p>
+                    <h3 v-if="director != false">{{director}}</h3>
+                    <p v-if="director != false">Director</p>
 
-                    <h3>Hello</h3>
-                    <p>Director, Writer</p>
+                    <h3 v-if="writer != false">{{writer}}</h3>
+                    <p v-if="writer != false">Writer</p>
+
+                    <h3 v-if="story != false">{{story}}</h3>
+                    <p v-if="story != false">Story</p>
+                    
                 </div>
             </div>
 
@@ -25,30 +45,38 @@
                     <div class="actors-container">
                         <!-- Actor Cards -->
                         <div v-for="actor in castData" :key="actor.id">
-                            <ActorCard v-if="typeof actor.id != 'string'" :actor="actor"></ActorCard>
+                            <ActorCard
+                                v-if="typeof actor.id == 'number'"
+                                :actor="actor"
+                            >
+                            </ActorCard>
                         </div>
-                        
-
                     </div>
                     <hr/>
 
-                    <h1>Media </h1>
+                    <h1>Media</h1>
                     <div class="media">
                         <div class="media-nav">
-                            <div class="media-menu-item media-activet-tab" @click="imageVideo='PosterContainer'">Images</div>
-                            <div class="media-menu-item" @click="imageVideo='VideoContainer'">Videos</div>
+                            <div class="media-menu-item media-active-tab" @click="changeToImages">Images</div>
+                            <div class="media-menu-item" @click="changeToVideos">Videos</div>
                         </div>
 
                         <div class="media-container">
-                            <keep-alive>
-                                <component :is="imageVideo" :images="imageData" :videos="videoData"></component>
-                            </keep-alive>
-                            <!-- <PosterContainer v-if="imageVideo == 'PosterContainer'" :images="imageData"></PosterContainer>
-                            <VideoContainer v-else :videos="videoData"></VideoContainer> -->
+                            <Transition name="fade" mode="out-in">
+                                <!-- <component :is="PosterContainer" :images="imageData"></component> -->
+                                <PosterContainer v-show="imageVideo == 'PosterContainer'" :images="imageData"></PosterContainer>
+                            </Transition>
 
+                            
+
+                            <Transition name="fade" mode="out-in">
+                                <VideoContainer v-show="imageVideo == 'VideoContainer'" :videos="videoData"></VideoContainer>
+                            </Transition>
+                            
                         </div>
                     </div>
                 </div>
+
                 <div class="less-info">
                     <h3>Status</h3>
                     <p>{{movieData.status}}</p>
@@ -72,6 +100,11 @@
             </div>
            
         </div>
+        <!-- <keep-alive>
+                                <component :is="imageVideo" :images="imageData" :videos="videoData"></component>
+                            </keep-alive> -->
+                            <!-- <PosterContainer v-show="imageVideo == 'PosterContainer'" :images="imageData"></PosterContainer> -->
+                            <!-- <VideoContainer v-show="imageVideo == 'VideoContainer'" :videos="videoData"></VideoContainer> -->
 </template>
 
 <script>
@@ -82,7 +115,7 @@ import PosterContainer from '@/components/PosterContainer.vue'
 import VideoContainer from '@/components/VideoContainer.vue'
 
 export default defineComponent({
-    components: { ActorCard, GenreToast, PosterContainer, VideoContainer, PosterContainer, VideoContainer },
+    components: { ActorCard, GenreToast, PosterContainer, VideoContainer },
     props: {
         id: {
             type: Number,
@@ -108,27 +141,31 @@ export default defineComponent({
             let keywordQuery = `https://api.themoviedb.org/3/movie/${this.id}/keywords?api_key=${this.KEY}`
             let videoQuery = `https://api.themoviedb.org/3/movie/${this.id}/videos?api_key=${this.KEY}&language=en-US`
 
-            let response = await fetch(movieQuery);
-            this.movieData = await response.json();
+            try {
+                let response = await fetch(movieQuery);
+                this.movieData = await response.json();
 
-            response = await fetch(imageQuery);
-            this.imageData = await response.json();
+                response = await fetch(imageQuery);
+                this.imageData = await response.json();
 
-            response = await fetch(videoQuery);
-            this.videoData = await response.json();
+                response = await fetch(videoQuery);
+                this.videoData = await response.json();
 
-            response = await fetch(keywordQuery);
-            let temp = await response.json();
-            this.keywordData = temp.keywords
-            
-            response = await fetch(creditsQuery);
-            temp = await response.json();
-            this.castData = temp.cast;
-            this.crewData = temp.crew;
-
-            console.log(this.videoData);
+                response = await fetch(keywordQuery);
+                let temp = await response.json();
+                this.keywordData = temp.keywords
+                
+                response = await fetch(creditsQuery);
+                temp = await response.json();
+                this.castData = temp.cast;
+                this.crewData = temp.crew;
+            }catch(err) {
+                console.error('Error: ', err)
+            }
+    
         },
 
+        // To format numbers (eg: 1500000 => 1 500 000)
         formattedValues(value) {
             let formattedValue = ''
 
@@ -165,8 +202,16 @@ export default defineComponent({
             return formattedValue;
         },
 
-        changeToImages() {
-            document.querySelector('.media-menu-item').classList.remove
+        changeToImages(e) {
+            Array.from(document.querySelectorAll('.media-menu-item')).forEach(mediaTab => mediaTab.classList.remove('media-active-tab'))
+            e.target.classList.add('media-active-tab')
+            this.imageVideo='PosterContainer'
+        },
+
+        changeToVideos(e) {
+            Array.from(document.querySelectorAll('.media-menu-item')).forEach(mediaTab => mediaTab.classList.remove('media-active-tab'))
+            e.target.classList.add('media-active-tab')
+            this.imageVideo='VideoContainer'
         }
     },
     async created() {
@@ -180,8 +225,37 @@ export default defineComponent({
 
         revenue() {
             return this.formattedValues(this.movieData.revenue)
+        },
+
+        writer() {
+            return this.crewData != undefined && this.crewData.find(crewMember => crewMember.job === 'Writer') != undefined ? this.crewData.find(crewMember => crewMember.job == 'Writer').name : false
+        },
+
+        director() {
+            return this.crewData != undefined && this.crewData.find(crewMember => crewMember.job === 'Director') != undefined ? this.crewData.find(crewMember => crewMember.job == 'Director').name : false
+        },
+
+        story() {
+            return this.crewData != undefined && this.crewData.find(crewMember => crewMember.job === 'Story') != undefined ? this.crewData.find(crewMember => crewMember.job == 'Story').name : false
+        },
+
+        movieImage() {
+            return this.imageData != undefined && this.imageData.posters != undefined && this.imageData.posters.length > 0 ? 
+                `https://image.tmdb.org/t/p/w500/${this.imageData.posters[0].file_path}` : 'https://advancement.uccs.edu/sites/g/files/kjihxj1886/files/2022-01/person.jpg'
         }
     }
 })
 
 </script>
+
+<style scoped>
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.1s linear;
+}
+</style>

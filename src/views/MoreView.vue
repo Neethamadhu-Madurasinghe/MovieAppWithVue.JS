@@ -1,26 +1,33 @@
 <template>
     <div class="main">
         
-        <h1 class="main-heading">{{title}}</h1>
-        <div class="controlable-page-content-area">
-            <div class="card-container full-width-container">
+        <h1 class="main-heading">{{heading}}</h1>
+        <div class="card-container full-width-container">
 
-                <div class="more-card-part">
                     <!-- Cards go here -->
-                    <CommonCard
-                        v-for="movie in movieData.results"
-                        :key="movie.id"
-                        :movie="movie"
-                    ></CommonCard>
-                    
-                </div>
+                    <TransitionGroup
+                            tag="div"
+                            class="more-card-part"
+                            @before-enter="beforeEnter"
+                            @enter="onEnter"
+                        >
+                            <CommonCard
+                                v-for="movie in movieData.results"
+                                :key="movie.id"
+                                :movie="movie"
+                            ></CommonCard>
+
+                    </TransitionGroup>
 
                 <!-- Navigation goes here -->
                 
-                <PageNavigation v-if="typeof movieData.page == 'number'" :startValue="1" :endValue="movieData.total_pages < 500 ? movieData.total_pages: 500" :currentValue="movieData.page">
+                <PageNavigation
+                    v-if="typeof movieData.page == 'number'"
+                    :startValue="1" :endValue="movieData.total_pages < 500 ? movieData.total_pages: 500"
+                    :currentValue="movieData.page"
+                >
                 </PageNavigation>
 
-            </div>
         </div>
         
     </div>
@@ -28,6 +35,7 @@
 
 <script>
 import { defineComponent } from "vue"
+import gsap from 'gsap'
 import CommonCard from "@/components/CommonCard.vue"
 import PageNavigation from "@/components/PageNavigation.vue"
 
@@ -36,12 +44,13 @@ export default defineComponent({
     props: {
         title: {
             type: String,
-            required: true
+            required: true,
+            default: 'No Title'
         },
 
-        word: {
+        searchWord: {
             type: String,
-            required: true
+            required: false
         },
         page: {
             type: Number,
@@ -62,7 +71,7 @@ export default defineComponent({
         async page() {
             this.search()
         },
-        async word() {
+        async searchWord() {
             this.search()
         }   
     },
@@ -73,15 +82,42 @@ export default defineComponent({
             if(this.title != 'search'){
                 movieQuery = `https://api.themoviedb.org/3/movie/${this.title}?api_key=${this.KEY}&language=en-US&page=${this.page}`;
             }else {
-                movieQuery = `https://api.themoviedb.org/3/search/movie?api_key=${this.KEY}&language=en-US&query=${this.$route.query.word}&page=${this.page}&include_adult=false`
+                movieQuery = `https://api.themoviedb.org/3/search/movie?api_key=${this.KEY}&language=en-US&query=${this.searchWord}&page=${this.page}&include_adult=false`
             }
         
             
             let response = await fetch(movieQuery);
             this.movieData = await response.json();
 
+        },
 
-            console.log(this.movieData)
+        beforeEnter(el) {
+            el.style.opacity = 0
+            el.style.transform = 'scale(0.7)'
+        },
+
+        onEnter(el, done) {
+            gsap.to(el, {
+                scale: 1,
+                opacity: 1,
+                duration: .1,
+                onComplete: done
+
+            })
+        }
+    },
+
+    computed: {
+        heading() {
+            const headings = {
+                popular: 'Popular',
+                top_rated: 'Top Rated',
+                now_playing: 'Now Playing',
+                upcoming: 'Upcoming',
+                search: this.searchWord + ": "+ (this.movieData.total_results != undefined ? this.movieData.total_results : 0) + ' Results Found'
+            }
+
+            return headings[this.title]
         }
     }
 })

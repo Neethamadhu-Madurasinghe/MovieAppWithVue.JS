@@ -34,7 +34,6 @@ body {
     align-items: center;
 }
 
-
 /* Styles for Navbar */
  
 .nav-bar {
@@ -46,6 +45,10 @@ body {
     background-color: var(--darker-color);
     color: white;
 }
+
+
+
+
 
 .logo-container {
     display: flex;
@@ -131,6 +134,7 @@ body {
 }
 
 .search-section {
+    /* margin-right: 20px; */
     width: 40%;
     max-width: 300px;
     display: flex;
@@ -153,6 +157,7 @@ body {
     text-align: center;
     background-color: var(--lighter-color); 
 }
+
 
 .search-box:hover {
     width: 70%;
@@ -204,6 +209,7 @@ body {
     }
 }
 
+
 /* Styles for main section  in index page*/
 
 .main {
@@ -221,6 +227,14 @@ body {
     cursor: default;
 }
 
+@media (max-width: 600px) {
+    .main-heading {
+        font-size: 2.0rem;
+        padding: 5px;
+    }
+}
+
+
 .trending-container {
     padding-left: 20px;
     padding-right: 20px;
@@ -231,6 +245,17 @@ body {
     max-width: 1200px;
 
 }
+
+@media (max-width: 600px) {
+    .trending-container {
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+    }
+}
+
 
 .trending-card {
     background-color: var(--lighter-color);
@@ -247,6 +272,8 @@ body {
     cursor: pointer;
 }
 
+
+
 .image-area {
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
@@ -255,7 +282,10 @@ body {
     min-height: 80%;
     background-position: center;
     background-size: cover;
+
 }
+
+
 
 .detail-area {
     display: flex;
@@ -278,32 +308,32 @@ body {
 }
 
 .genre-toast-interactive {
+ 
 }
 
+.genre-toast-interactive:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+}
+
+.genre-toast-selected {
+    background-color: var(--light-color);
+}
+
+
 @media (max-width: 600px) {
-    .main-heading {
-        font-size: 2.0rem;
-        padding: 5px;
-    }
-
-    .trending-container {
-        padding: 10px;
-        width: 100%;
-        display: flex;
-        justify-content: space-evenly;
-        flex-wrap: wrap;
-    }
-
     .trending-card {
         width: 160px;
         height: 310px;
         margin: 10px
+
     }
 
     .genre-toast {
         font-size: 12px;
     }
 }
+
 
 /* CSS for main section in pages with a filters */
 /* CSS for filter and sorting area */
@@ -332,7 +362,18 @@ body {
     margin-bottom: 20px;
     overflow: hidden;
     transition-property: height;
-    transition-duration: 0.4s;  
+    transition-duration: 0.4s;
+    
+}
+
+@media (max-width: 600px) {
+    .control-selection-box {
+       width: 100%;
+    }
+
+    .search-btn {
+        width: 100%
+    }
 }
 
 .control-title{
@@ -379,6 +420,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin-top: 8px;
+    /* padding: 2px; */
     font-size: 16px;
     width: 100%;
     background-color: var(--darker-color);
@@ -399,14 +441,14 @@ body {
     opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
-}
+  }
   
-.slider:hover {
+  .slider:hover {
     opacity: 1;
     cursor: default;
-}
+  }
   
-.slider::-webkit-slider-thumb {
+  .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 15px;
@@ -414,16 +456,16 @@ body {
     background: var(--normal-color);
     cursor: pointer;
     border-radius: 3px;
-}
+  }
   
-.slider::-moz-range-thumb {
+  .slider::-moz-range-thumb {
     width: 25px;
     height: 25px;
     background: #04AA6D;
     cursor: pointer;
-}
+  }
 
-.search-btn {
+  .search-btn {
       min-width:80%;
       font-size: 17px;
       padding: 10px;
@@ -436,24 +478,14 @@ body {
       justify-content: center;
       align-items: center;
       margin: 10px;
-}
+  }
 
-.search-btn:hover {
+  .search-btn:hover {
       transform: scale(1.02);
       cursor: pointer;
       outline: none;
       user-select: none;
-}
-
-@media (max-width: 600px) {
-    .control-selection-box {
-       width: 100%;
-    }
-
-    .search-btn {
-        width: 100%
-    }
-}
+  }
 
 
 /* CSS for card area (Main area) */
@@ -465,10 +497,20 @@ body {
     align-items: center;
 }
 
+@media (max-width: 600px) {
+    .card-part {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 .card-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
+    /* background-color: beige; */
     width: 100%;
     height: 100%;
 }
@@ -511,7 +553,6 @@ body {
 .nav-next {
     min-width: 72px;
 }
-
 .common-card {
     background-color: var(--lighter-color);
     width: 180px;
@@ -521,6 +562,14 @@ body {
     position: relative;
     box-shadow: rgba(0, 0, 0, 0.7) 3px 3px 8px;
     transition: transform 0.2s ease-in-out;
+}
+
+@media (max-width: 600px) {
+    .common-card {
+        width: 155px;
+        height: 345px;
+        margin: 10px 5px;
+    }
 }
 
 .common-card:hover {
@@ -569,23 +618,7 @@ body {
     transform: translate(20%, -50%);
 }
 
-@media (max-width: 600px) {
-    .card-part {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .common-card {
-        width: 155px;
-        height: 345px;
-        margin: 10px 5px;
-    }
-}
-
 /* Responsive CSS for pages with control section */
-
 @media (max-width: 600px) {
     .controlable-page-content-area {
         flex-direction: column;
@@ -599,13 +632,15 @@ body {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        /* background-color: beige; */
         width: 100%;
         height: 100%;
     }
 }
 
-/* Css for pages like Popular, Treding .... (Pages do not have a contol area) */
 
+
+/* Css for pages like Popular, Treding .... (Pages do not have a contol area) */
 .full-width-container {
     width: 90%;
     display: flex;
@@ -622,13 +657,13 @@ body {
 
 
 /* CSS for individual Movie pages */
-
 .summary {
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--darker-color);
     width: 100%;
+    /* min-height: 500px; */
     padding: 20px 0;
     margin-top: 20px;  
 }
@@ -642,10 +677,17 @@ body {
     margin-right: 30px;
 }
 
+@media (max-width: 600px) {
+    .summary .image-container {
+        margin-right: 0;
+    }
+}
+
 .summary .text-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    /* background-color: #D7B19D; */
     width: calc(80% - 300px);
     min-height: 400px;
     color: white;
@@ -708,6 +750,27 @@ body {
     margin: 15px 0 3px 0;
 }
 
+@media (max-width: 600px) {
+    .summary {
+        flex-direction: column;
+    }
+
+    .summary .image-container {
+        width: 300px;
+        height: 450px;
+    }
+
+    .summary .text-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 90%;
+        min-height: 400px;
+        padding: 10px;
+    }
+        
+}
+
 .additional-data {
     display: flex;
     align-items: flex-start;
@@ -720,12 +783,16 @@ body {
     width: 72%;
 }
 
+
+
 .actors-container {
     position: relative;
     overflow-x: auto;
     display: flex;
     width: 100%;
     padding-bottom: 10px;
+    /* background-color: aqua; */
+
 }
 
 .actors-card {
@@ -768,6 +835,22 @@ body {
     padding-bottom: 10px;
 }
 
+@media (max-width: 600px) {
+    .additional-data {
+        flex-direction: column;
+
+    }
+
+    .actors-and-media{
+        width: 100%;
+    }
+    
+    .less-info {
+        width: 95%;
+        margin: 10px;
+        margin-bottom: 20px;
+    }    
+}
 .less-info h3 {
     font-size: 16px;
     margin: 12px 0 3px 0;
@@ -850,38 +933,12 @@ body {
     height: 100%;
 }
 
-@media (max-width: 600px) {
-    .summary {
-        flex-direction: column;
-    }
 
-    .summary .image-container {
-        width: 300px;
-        height: 450px;
-        margin-right: 0;
-    }
 
-    .summary .text-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 90%;
-        min-height: 400px;
-        padding: 10px;
-    }
 
-    .additional-data {
-        flex-direction: column;
 
-    }
 
-    .actors-and-media{
-        width: 100%;
-    }
-    
-    .less-info {
-        width: 95%;
-        margin: 10px;
-        margin-bottom: 20px;
-    }    
-}
+
+
+
+/* https://image.tmdb.org/t/p/w500/yIeFT2RqJdXMRIhGLs05xtzBkt9.jpg */

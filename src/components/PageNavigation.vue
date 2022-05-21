@@ -9,13 +9,13 @@
 
         <span class="page-nav" v-if="currentValue != startValue" @click="toNumber">{{currentValue - 1}}</span>
 
-        <span class="page-nav">{{currentValue}}</span>
+        <span class="page-nav page-nav-current">{{currentValue}}</span>
 
         <span class="page-nav" v-if="currentValue != endValue" @click="toNumber">{{currentValue + 1}}</span>
 
-        <span v-if="currentValue != endValue">....</span>
+        <span v-if="currentValue < endValue - 1">....</span>
 
-        <span class="page-nav nav-last" v-if="currentValue != endValue" @click="toEnd">{{endValue}}</span>
+        <span class="page-nav nav-last" v-if="currentValue < endValue - 1" @click="toEnd">{{endValue}}</span>
 
         <span class="page-nav nav-next" v-if="currentValue != endValue" @click="toNext">Next</span>
 
@@ -46,7 +46,6 @@ export default defineComponent({
 
     methods: {
         toPrevious() {
-            console.log(this.$route.path)
             this.$router.push({ path: this.$route.path, query: { ...this.$route.query, page: this.currentValue - 1 } })
         },
 
@@ -66,6 +65,5 @@ export default defineComponent({
             this.$router.push({ path: this.$route.path, query: { ...this.$route.query, page: el.target.textContent } })
         }
     }
-
 })
 </script>

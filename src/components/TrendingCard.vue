@@ -1,11 +1,17 @@
 <template>
-    <div class="trending-card">
-        <router-link :to="`/movie/${movie.id}`">
-            <div class="image-area" :style="`background-image:url('https://image.tmdb.org/t/p/w500/${movie.imageUrl}')`"></div>
+    <div>
+         <div class="trending-card">
+
+        <router-link :to="{ name: 'movieDetails', params: {id: movie.id} }">
+            <img :src="imagePath" alt="Image not found" class="image-area">
+            <!-- <div class="image-area" :style="`background-image:url('https://image.tmdb.org/t/p/w500/${movie.imageUrl}')`"></div> -->
             <div class="detail-area">
                 <genre-toast v-for="genre in movie.genres" :key="genre.id">{{genre.name}}</genre-toast>       
             </div>
         </router-link>
+
+        </div>
+        
     </div>
 </template>
 
@@ -21,6 +27,13 @@ export default defineComponent({
             required: true,
             default: {movieId: 0, imageUrl: undefined, genres: []}
         }
+    },
+
+    computed: {
+        imagePath() {
+            return this.movie.imageUrl != undefined ? `https://image.tmdb.org/t/p/w500/${this.movie.imageUrl}` : 'https://advancement.uccs.edu/sites/g/files/kjihxj1886/files/2022-01/person.jpg'
+        }
     }
 })
+
 </script>

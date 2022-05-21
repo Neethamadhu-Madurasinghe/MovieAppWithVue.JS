@@ -10,13 +10,17 @@
 
                         <div class="input-section">
                             <div class="control-body">
-                                <label for="sort">Filter Results by</label>
-                                <br>
-                                <select v-model="sortBy" name="sort" class="filter-input">Select filter>
-                                    <option v-for="option in options" :value="option.value" :key="option.value">{{option.text}}</option>
+                                <label for="sortBy">Filter Results by</label>
+                                <select v-model="sortBy" name="sortBy" class="filter-input">
+                                    <option
+                                        v-for="option in options"
+                                        :value="option.value"
+                                        :key="option.value"
+                                    >
+                                        {{option.text}}
+                                    </option>
                                 </select>
                             </div>
-
                         </div>
 
                     </ControllerItem>
@@ -27,8 +31,7 @@
 
                         <div class="input-section">
                             <div class="control-body">
-                                <label>Release Day</label>
-                                <br>
+                                <label>Release Date</label>
                                 <p for="releaseFrom">From</p>
                                 <input v-model="dateFrom" type="date" name="releaseFrom" class="filter-input">
 
@@ -40,14 +43,13 @@
                         <div class="input-section">
                             <div class="control-body">
                                 <label>Genre</label>
-                                <br>
                                 <div class="filter-input">
                                     <span
                                         v-for="genre in genresList.genres"
                                         :key="genre.id"
-                                        class="genre-toast genre-toast-interactive"
                                         :data-id="genre.id"
                                         @click="addRemoveGenre"
+                                        class="genre-toast genre-toast-interactive"
                                     >
                                     {{genre.name}}
                                     </span>
@@ -58,12 +60,27 @@
                         <div class="input-section">
                             <div class="control-body">
                                 <label>Rating</label>
-                                <br>
+
                                 <p for="releaseFrom">Minimum: {{minVote}}</p>
-                                <input v-model="minVote" type="range" min="1" max="10" step="0.1" class="filter-input slider">
+                                <input
+                                    v-model="minVote"
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    step="0.1"
+                                    class="filter-input slider"
+                                >
 
                                 <p for="releaseFrom">Maximum: {{maxVote}}</p>
-                                <input v-model="maxVote" type="range" min="1" max="10" step="0.1" class="filter-input slider">
+
+                                <input
+                                    v-model="maxVote"
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    step="0.1"
+                                    class="filter-input slider"
+                                >
                             </div>
                         </div>
 
@@ -72,29 +89,49 @@
                     <button @click="searchByButton" class="search-btn">Search</button>
 
                 </div>
+                
                 <div class="card-part">
-
-                     <div class="card-container">
+                        <div class="card-container">
                         <!-- Cards goes here -->
-                        <CommonCard
+                         <TransitionGroup
+                            tag="div"
+                            class="trending-container"
+                            @before-enter="beforeEnter"
+                            @enter="onEnter"
+                        >
+                            <CommonCard
+                                v-for="movie in movieData.results"
+                                :key="movie.id"
+                                :movie="movie"
+                            ></CommonCard>
+
+                        </TransitionGroup>
+
+                        <!-- <CommonCard
                             v-for="movie in movieData.results"
                             :key="movie.id"
                             :movie="movie"
-                        ></CommonCard>
+                        ></CommonCard> -->
                     </div>
 
+
                     <!-- Navigation goes here -->
-                    <PageNavigation v-if="typeof movieData.page == 'number'" :startValue="1" :endValue="movieData.total_pages < 500 ? movieData.total_pages: 500" :currentValue="movieData.page">
+                    <PageNavigation
+                        v-if="typeof movieData.page == 'number'"
+                        :startValue="1"
+                        :endValue="movieData.total_pages < 500 ? movieData.total_pages: 500"
+                        :currentValue="movieData.page"
+                        >
                     </PageNavigation>
                 </div>
 
             </div>
-            
         </div>
 </template>
 
 <script>
 import { defineComponent } from "vue"
+import gsap from 'gsap'
 import ControllerItem from "@/components/ControllerItem.vue"
 import CommonCard from "@/components/CommonCard.vue"
 import PageNavigation from "@/components/PageNavigation.vue"
@@ -128,15 +165,8 @@ export default defineComponent({
             genres: [],
             minVote: 1,
             maxVote: 9.9,
-            movieData: [],
-            q: ''
+            movieData: []
         }
-    },
-
-    async created() {
-        this.search()
-        const genreResponse = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${this.KEY}&language=en-US`)
-        this.genresList = await genreResponse.json()
     },
 
     methods: {
@@ -151,16 +181,16 @@ export default defineComponent({
         },
 
         async search() {
-            let query = `https://api.themoviedb.org/3/discover/movie?api_key=${this.KEY}&language=en-US&include_adult=false&include_video=false&page=${this.page}&with_watch_monetization_types=flatrate`
-            this.movieData = []
-            query += `&sort_by=${this.sortBy}&vote_average.gte=${this.minVote}&vote_average.lte=${this.maxVote}`
+            let searchQuery = `https://api.themoviedb.org/3/discover/movie?api_key=${this.KEY}&language=en-US&include_adult=false&include_video=false&page=${this.page}&with_watch_monetization_types=flatrate`
+            // this.movieData = []
+            searchQuery += `&sort_by=${this.sortBy}&vote_average.gte=${this.minVote}&vote_average.lte=${this.maxVote}`
 
             if(this.dateFrom != ''){
-                query += `&release_date.gte=${this.dateFrom}`
+                searchQuery += `&release_date.gte=${this.dateFrom}`
             }
 
-            if(this.dateFrom != ''){
-                query += `&release_date.lte=${this.dateTo}`
+            if(this.dateTo != ''){
+                searchQuery += `&release_date.lte=${this.dateTo}`
             }
 
             if(this.genres.length > 0){
@@ -168,25 +198,59 @@ export default defineComponent({
                 this.genres.forEach(genre => {
                     genreQuery += genre + ','
                 })
+                searchQuery += genreQuery
+            }
+            
+            try {
+                const response = await fetch(searchQuery)
+                this.movieData = await response.json()
+                
+            }catch(err){
+                console.error('Error: ', err)
 
-                query += genreQuery
+            }finally{
+                // console.log(searchQuery)
             }
             
 
-            const response = await fetch(query)
-            this.movieData = await response.json()
-            console.log(this.page, this.movieData)
         },
 
         async searchByButton() {
             this.$router.push({ path: '/discover', query: { page: 1 } })
             this.search()
+        },
+
+        beforeEnter(el) {
+            el.style.opacity = 0
+            el.style.transform = 'scale(0.7)'
+        },
+
+        onEnter(el, done) {
+            gsap.to(el, {
+                scale: 1,
+                opacity: 1,
+                duration: .1,
+                onComplete: done
+
+            })
         }
     },
+
     watch: {
-        page() {
-            this.search()
+        async page() {
+            await this.search()
         }     
+    },
+
+    async created() {
+        try {
+            const genreResponse = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${this.KEY}&language=en-US`)
+            this.genresList = await genreResponse.json()
+            await this.search()
+        }catch(err) {
+            console.error("Error: ", err)
+        }
+        
     }
 }) 
 </script>

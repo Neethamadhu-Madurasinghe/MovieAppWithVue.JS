@@ -4,7 +4,6 @@
             <h1 class="main-heading">Trending</h1>
 
             <TransitionGroup
-                name="movie-load"
                 tag="div"
                 class="trending-container"
                 @before-enter="beforeEnter"
@@ -18,11 +17,6 @@
                 ></TrendingCard>
 
             </TransitionGroup>
-            <!-- <div class="trending-container"> -->
-
-               <!-- Trending cards -->
-               
-            <!-- </div> -->
 
         </div>
 </template>
@@ -53,23 +47,34 @@ export default defineComponent({
                 opacity: 1,
                 duration: .5,
                 onComplete: done,
-                delay: 0.1 * el.dataset.index
+                delay: 0.1 * el.dataset.index,
+
             })
         }
     },
     async created() {
-        const trendingResponse = await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=${this.KEY}`)
-        const trendingData = await trendingResponse.json()
-        const genreResponse = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${this.KEY}&language=en-US`)
-        const genreData = await genreResponse.json()
+        const tredningMovieQuery = `https://api.themoviedb.org/3/trending/all/week?api_key=${this.KEY}`
+        const grenreQuery = `https://api.themoviedb.org/3/genre/movie/list?api_key=${this.KEY}&language=en-US`
+        let response = undefined;
 
-        trendingData.results.slice(0, 5).forEach(movie => {
-            let currentMovie = {id: movie.id, imageUrl: movie.poster_path, genres: []}
-            movie.genre_ids.forEach(genreId => {
-                currentMovie.genres.push(genreData.genres.find(genre => genre.id == genreId))
+        try {
+            response = await fetch(tredningMovieQuery)
+            const trendingData = await response.json()
+
+            response = await fetch(grenreQuery)
+            const genreData = await response.json()
+
+            trendingData.results.slice(0, 5).forEach(movie => {
+                let currentMovie = {id: movie.id, imageUrl: movie.poster_path, genres: []}
+                movie.genre_ids.forEach(genreId => {
+                    currentMovie.genres.push(genreData.genres.find(genre => genre.id == genreId))
+                })
+                this.trendingMovies.push(currentMovie)
             })
-            this.trendingMovies.push(currentMovie)
-        })
+
+        }catch(err) {
+            console.error('Error: ', err)
+        }  
     }
 })
 </script>

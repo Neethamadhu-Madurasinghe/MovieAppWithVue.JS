@@ -3,13 +3,12 @@
 
         <div class="control-title">
             <span><slot name="title">No Title</slot></span>
-            <i class="fa-solid fa-angle-right" v-if="!isExpanded" @click="isExpanded = !isExpanded"></i>
-            <i class="fa-solid fa-angle-down" v-else @click="isExpanded = !isExpanded"></i>
+            <i class="fa-solid fa-angle-right expand-shrink-btn" v-if="!isExpanded" @click="isExpanded = !isExpanded"></i>
+            <i class="fa-solid fa-angle-down expand-shrink-btn" v-else @click="isExpanded = !isExpanded"></i>
         </div>
         <div v-if="isExpanded">
             <slot>No Controllers</slot>
         </div>
-       
                     
     </div>
 </template>
@@ -22,9 +21,6 @@ export default defineComponent({
         return {
             isExpanded: true
         }
-    },
-    methods: {
-
     }
 }) 
 </script>

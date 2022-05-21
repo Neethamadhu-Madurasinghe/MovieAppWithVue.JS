@@ -5,22 +5,30 @@
          </div>
             
         <div class="nav-menu">
-            <router-link to="/popular?page=1" class=menu-item>Popular</router-link>
-            <router-link to="/discover?page=1" class=menu-item>Discover</router-link>
-            <div class="menu-item" id="menu-more" @click="toggleShowMore">More
-                <div v-show="showMore" class="more-menu-item-container">
-                    <router-link to="/top_rated?page=1" class="more-menu-item">Top Rated</router-link>
-                    <router-link to="/now_playing?page=1" class="more-menu-item">Now Playing</router-link>
-                    <router-link to="/upcoming?page=1" class="more-menu-item">Upcoming</router-link>
-                </div>
+            <router-link :to="{ name: 'commonMovieInfo', params: {title: 'popular'}, query: {page: 1} }" class=menu-item>
+                <div class="menu-title">Popular</div>
+            </router-link>
+
+            <router-link :to="{ name: 'discover', query: {page: 1} }" class=menu-item>
+                <div class="menu-title">Discover</div>
+            </router-link>
+            
+            <div class="menu-item" id="menu-more" @click="toggleShowMore">
+                <div class="menu-title">More</div>
+                <Transition name="fade">
+                    <div v-show="showMore" class="more-menu-item-container">
+                        <router-link :to="{ name: 'commonMovieInfo', params: {title: 'top_rated'}, query: {page: 1} }" class="more-menu-item">Top Rated</router-link>
+                        <router-link :to="{ name: 'commonMovieInfo', params: {title: 'now_playing'}, query: {page: 1} }" class="more-menu-item">Now Playing</router-link>
+                        <router-link :to="{ name: 'commonMovieInfo', params: {title: 'upcoming'}, query: {page: 1} }" class="more-menu-item">Upcoming</router-link>
+                    </div>
+                </Transition>
             </div>
-
-             <div class="search-section">
-                <input class="search-box" type="text" name="search" placeholder="Search Movie" v-model="searchValue" @keypress.enter="searchMovie">
-            </div>
-
-
         </div>
+
+        <div class="search-section">
+            <input class="search-box" type="text" name="search" placeholder="Search" v-model="searchValue" @keypress.enter="searchMovie">
+        </div>
+
             
     </div>
 </template>
@@ -53,10 +61,25 @@ export default defineComponent({
             if(this.searchValue == '') return
             this.searchValue = this.searchValue.trim()
             this.$router.push({
-                path: '/search',
-                query: { word: this.searchValue, page:1 }
+                name: 'commonMovieInfo',
+                params: { title: 'search' },
+                query: { search: this.searchValue, page:1}
                 })
+            this.searchValue = ''
         }
     }
 })
 </script>
+
+<style scoped>
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.05s linear;
+}
+
+</style>
