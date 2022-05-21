@@ -1,29 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import IndexView from '@/views/IndexView.vue'
-import DiscoverView from '@/views/DiscoverView.vue'
-import MovieDetail from '@/views/MovieDetail.vue'
-import PosterContainer from '@/components/PosterContainer.vue'
-import MoreView from '@/views/MoreView.vue'
-import NotFound from '@/views/NotFound.vue'
 import { toNumber } from '@vue/shared'
 
 const routes = [
-    { path: '/', component: IndexView },
+    { path: '/', component: () => import('@/views/IndexView.vue') },
     {
         path: '/discover',
         name: 'discover',
-        component: DiscoverView,
+        component: () => import('@/views/DiscoverView.vue'),
         props: route => ({page: toNumber(route.query.page)})
     },
     {
         path: '/movie/:id',
         name: 'movieDetails',
-        component: MovieDetail,
+        component: () => import('@/views/MovieDetail.vue'),
         props: route => ({id: toNumber(route.params.id)}),
         children: [
             {
                 path: 'images',
-                component: PosterContainer
+                component: () => import('@/components/PosterContainer.vue')
             }
            
         ]
@@ -31,7 +25,7 @@ const routes = [
     {
         path: '/common/:title',
         name: 'commonMovieInfo',
-        component: MoreView,
+        component: () => import('@/views/MoreView.vue'),
         props: route => ({title: route.params.title, page: toNumber(route.query.page), searchWord: route.query.search}),
         beforeEnter: (to, from) => {
             const paths = [ '/common/popular', '/common/top_rated', '/common/now_playing', '/common/upcoming', /common\/search/]
@@ -43,7 +37,7 @@ const routes = [
     {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
-        component: NotFound
+        component: () => import('@/views/NotFound.vue')
     }
 ]
 
