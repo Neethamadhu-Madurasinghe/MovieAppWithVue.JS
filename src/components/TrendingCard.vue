@@ -6,7 +6,7 @@
             <img :src="imagePath" alt="Image not found" class="image-area">
             <!-- <div class="image-area" :style="`background-image:url('https://image.tmdb.org/t/p/w500/${movie.imageUrl}')`"></div> -->
             <div class="detail-area">
-                <genre-toast v-for="genre in movie.genres" :key="genre.id">{{genre.name}}</genre-toast>       
+                <genre-toast v-for="genre in movie.genres.slice(0, 4)" :key="genre.id">{{genre.name}}</genre-toast>       
             </div>
         </router-link>
 

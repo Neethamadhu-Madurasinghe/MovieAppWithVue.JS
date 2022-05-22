@@ -7,7 +7,6 @@
     --light-color: #C68B59;
     --lighter-color: #D7B19D;
     --lightest-color: #FFE4D4;
-
 }
 
 * {
@@ -25,6 +24,7 @@ body {
     margin: 0;
     display: flex;
     background-color: var(--normal-color);
+    transition: color 0.2s ease-in-out, background-color 0.2s linear
 }
 
 .app, #app {
@@ -92,6 +92,8 @@ body {
 
 .menu-title{
     transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    user-select: none;
  }
 
 
@@ -151,7 +153,7 @@ body {
     width: 70px;
     transition: all 0.2s ease-in-out;
     text-align: center;
-    background-color: var(--lighter-color); 
+    background-color: var(--lightest-color); 
 }
 
 .search-box:hover {
@@ -806,7 +808,7 @@ body {
     font-weight: bold;
     font-family: 'Space Grotesk';
     user-select: none;
-    background-color: #402218;
+    background-color: var(--darker-color);
     color: var(--lightest-color);
     padding: 5px;
     border-radius: 5px;
@@ -843,7 +845,8 @@ body {
 }
 
 .video-container {
-    height: 100%;
+    position: relative;
+    width: 100%;
 }
 
 #video-player {
@@ -884,9 +887,15 @@ body {
         width: 100%;
     }
     
+    
     .less-info {
         width: 95%;
         margin: 10px;
         margin-bottom: 20px;
-    }    
+    }
+    
+    #video-player {
+        height: 70%;
+        width: 95vw
+    }
 }

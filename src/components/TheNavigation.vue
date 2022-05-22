@@ -23,6 +23,11 @@
                     </div>
                 </Transition>
             </div>
+
+            <div class=menu-item>
+                <div class="menu-title" @click="changeColor">Color</div>
+            </div>
+            
         </div>
 
         <div class="search-section">
@@ -52,7 +57,8 @@ export default defineComponent({
 
     data() {
         return {
-            searchValue: ''
+            searchValue: '',
+            currentColorTheme: 0
         }
     },
 
@@ -66,6 +72,49 @@ export default defineComponent({
                 query: { search: this.searchValue, page:1}
                 })
             this.searchValue = ''
+        },
+
+        changeColor() {
+            const colors = [
+                {
+                    '--darker-color': '#402218',
+                    '--normal-color': '#865439',
+                    '--light-color': '#C68B59',
+                    '--lighter-color': '#D7B19D',
+                    '--lightest-color': '#FFE4D4'
+                },
+                {
+                    '--darker-color': '#220E24',
+                    '--normal-color': '#342056',
+                    '--light-color': '#639CD9',
+                    '--lighter-color': '#639CD9',
+                    '--lightest-color': '#d8e6f7'
+                },
+                {
+                    '--darker-color': '#242F9B',
+                    '--normal-color': '#646FD4',
+                    '--light-color': '#9BA3EB',
+                    '--lighter-color': '#DBDFFD',
+                    '--lightest-color': '#d3d4db'
+                },
+                {
+                    '--darker-color': '#191A19',
+                    '--normal-color': '#4E9F3D',
+                    '--light-color': '#4E9F3D',
+                    '--lighter-color': '#D8E9A8',
+                    '--lightest-color': '#a7c74e'
+                }
+
+                
+            ]
+            const r = document.querySelector(':root')
+            this.currentColorTheme = (this.currentColorTheme + 1) % colors.length
+
+            Object.keys(colors[this.currentColorTheme]).forEach(key => {
+                r.style.setProperty(key, colors[this.currentColorTheme][key]);
+            })
+
+            
         }
     }
 })
